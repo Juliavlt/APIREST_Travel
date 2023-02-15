@@ -1,11 +1,13 @@
 package ifsp.travel.model.dto;
 
+import ifsp.travel.model.AdditionalInfo;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
+import java.util.List;
 
 @Data
 @Builder
@@ -13,7 +15,7 @@ import java.io.Serializable;
 @AllArgsConstructor
 public class FlightResponseDTO implements Serializable {
 
-    /*private List<String> images;*/
+    private List<String> images;
 
     private Long id;
 
@@ -35,7 +37,7 @@ public class FlightResponseDTO implements Serializable {
 
     private String airline;
 
-    /*private List<AdditionalInfo> additional;*/
+    private List<AdditionalInfo> additional;
 
     private String error;
 

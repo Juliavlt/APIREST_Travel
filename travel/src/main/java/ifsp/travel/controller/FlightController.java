@@ -17,17 +17,6 @@ public class FlightController {
     @Autowired
     FlightService flightService;
 
-    @GetMapping("/flight")
-    @Transactional
-    public ResponseEntity<?> getFlight(@RequestBody FlightRequestDTO flightRequestDTO) {
-
-        FlightResponseDTO response = flightService.get(flightRequestDTO);
-        if (response.getError()==null){
-            return ResponseEntity.ok(response);
-        }
-        return ResponseEntity.badRequest().body(response.getError());
-    }
-
     @PostMapping("/flight")
     @Transactional
     public ResponseEntity<?> createFlight(
@@ -36,22 +25,33 @@ public class FlightController {
         FlightResponseDTO flight = flightService.create(flightRequestDTO);
 
         if(flight.getError()==null){
-            return ResponseEntity.ok(String.valueOf(flight.getId()));
+            return ResponseEntity.ok().build();
         }
         return ResponseEntity.badRequest().body(flight.getError());
     }
 
+    @GetMapping("/flight")
+    @Transactional
+    public ResponseEntity<?> getFlight(@RequestParam(value = "id", required = true) Long id) {
+
+        FlightResponseDTO response = flightService.get(id);
+        if (response.getError()==null){
+            return ResponseEntity.ok(response);
+        }
+        return ResponseEntity.badRequest().body(response.getError());
+    }
+
     @DeleteMapping("/flight")
     @Transactional
-    public ResponseEntity deleteFlight(@RequestBody FlightRequestDTO request) {
-        FlightResponseDTO flightResponseDTO = flightService.delete(request.getName());
+    public ResponseEntity deleteFlight(@RequestParam(value = "id", required = true) Long id) {
+        FlightResponseDTO flightResponseDTO = flightService.delete(id);
         if(flightResponseDTO.getError()==null) {
             return ResponseEntity.ok().build();
         }
         return ResponseEntity.badRequest().body(flightResponseDTO.getError());
     }
 
-    @GetMapping("/flights")
+    @GetMapping("/allFlights")
     @Transactional
     public ResponseEntity<List<Flight>> getFlights(){
         List<Flight> response = flightService.getAllFlights();

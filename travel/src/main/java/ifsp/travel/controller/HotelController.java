@@ -18,23 +18,12 @@ public class HotelController {
     @Autowired
     HotelService hotelService;
 
-    @GetMapping("/hotel")
-    @Transactional
-    public ResponseEntity<?> getHotel(@RequestBody HotelRequestDTO hotelRequestDTO) {
-
-        HotelResponseDTO response = hotelService.find(hotelRequestDTO);
-        if (response.getError()==null){
-            return ResponseEntity.ok(response);
-        }
-        return ResponseEntity.badRequest().body(response.getError());
-    }
-
     @PostMapping("/hotel")
     @Transactional
     public ResponseEntity<?> createHotel(
-            @RequestBody HotelRequestDTO hotelRequestDTO) {
+            @RequestBody HotelRequestDTO request) {
 
-        HotelResponseDTO hotel = hotelService.create(hotelRequestDTO);
+        HotelResponseDTO hotel = hotelService.create(request);
 
         if(hotel.getError()==null){
             return ResponseEntity.ok().build();
@@ -42,20 +31,40 @@ public class HotelController {
         return ResponseEntity.badRequest().body(hotel.getError());
     }
 
+    @GetMapping("/hotel")
+    @Transactional
+    public ResponseEntity<?> getHotel(@RequestParam(value = "id", required = true) Long id) {
+
+        HotelResponseDTO response = hotelService.find(id);
+        if (response.getError()==null){
+            return ResponseEntity.ok(response);
+        }
+        return ResponseEntity.badRequest().body(response.getError());
+    }
+
     @DeleteMapping("/hotel")
     @Transactional
-    public ResponseEntity deleteHotel(@RequestBody HotelRequestDTO request) {
-        HotelResponseDTO hotelResponseDTO = hotelService.delete(request.getId());
+    public ResponseEntity deleteHotel(@RequestParam(value = "id", required = true) Long id) {
+        HotelResponseDTO hotelResponseDTO = hotelService.delete(id);
         if(hotelResponseDTO.getError()==null) {
             return ResponseEntity.ok().build();
         }
         return ResponseEntity.badRequest().body(hotelResponseDTO.getError());
     }
 
-    @GetMapping("/hotels")
+    @GetMapping("/allHotels")
     @Transactional
     public ResponseEntity<List<Hotel>> getHotels(){
         List<Hotel> response = hotelService.getAllHotels();
         return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("/hotel/rate")
+    @Transactional
+    public ResponseEntity<?> rateHotel(
+            @RequestBody HotelRequestDTO request) {
+
+        hotelService.rate(request);
+        return ResponseEntity.ok().build();
     }
 }

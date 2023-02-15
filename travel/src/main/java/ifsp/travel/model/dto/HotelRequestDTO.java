@@ -1,5 +1,6 @@
 package ifsp.travel.model.dto;
 
+import ifsp.travel.model.AdditionalInfo;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -7,6 +8,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
 
 import java.io.Serializable;
+import java.util.List;
 
 @Data
 @Builder
@@ -18,17 +20,17 @@ public class HotelRequestDTO implements Serializable {
 
     private String name;
 
-    /*private List<String> images;*/
+    private List<String> images;
 
     private String location;
 
-    private String rate;
+    private Double rate;
 
     private String departureDate;
 
     private String returnDate;
 
-    private String dailyPrice;
+    private Double dailyPrice;
 
-    /* private Map<String, String> additional;*/
+    private List<AdditionalInfo> additional;
 }

@@ -1,10 +1,14 @@
 package ifsp.travel.model.dto;
 
 import ifsp.travel.model.AdditionalInfo;
+import ifsp.travel.model.Image;
+import ifsp.travel.model.entity.Flight;
+import ifsp.travel.model.entity.Hotel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
 import java.io.Serializable;
 import java.util.List;
 
@@ -12,31 +16,19 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class FlightRequestDTO implements Serializable {
+public class PackageResponseDTO implements Serializable {
 
-    private static final long serialVersionUID = 1L;
-
-    private Long id;
-
-    private String name;
-
+    private long id;
+    private String mainImage;
+    private List<Image> images;
     private String departureDate;
-
     private String returnDate;
-
     private String origin;
-
     private String destiny;
+    private String title;
+    private String price;
+    private Hotel hotel;
+    private Flight flight;
+    private String error;
 
-    private Long price;
-
-    private Integer vacancies;
-
-    private String classType;
-
-    private String airline;
-
-    private List<String> images;
-
-    private List<AdditionalInfo> additional;
 }

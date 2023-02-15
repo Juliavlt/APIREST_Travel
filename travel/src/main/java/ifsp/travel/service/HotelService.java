@@ -1,19 +1,24 @@
 package ifsp.travel.service;
 
+import ifsp.travel.model.Image;
 import ifsp.travel.model.entity.Hotel;
 import ifsp.travel.model.dto.HotelRequestDTO;
 import ifsp.travel.model.dto.HotelResponseDTO;
 import ifsp.travel.repository.HotelRepository;
+import ifsp.travel.repository.ImageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
+import java.util.ArrayList;
 import java.util.List;
+
 
 @Service
 public class HotelService {
-    @Autowired
-    private HotelRepository repository;
+
+    @Autowired private ImageRepository imageRepository;
+    @Autowired private HotelRepository repository;
 
     public HotelResponseDTO create(HotelRequestDTO requestDTO) {
 
@@ -22,8 +27,9 @@ public class HotelService {
                 .departureDate(requestDTO.getDepartureDate())
                 .returnDate(requestDTO.getReturnDate())
                 .location(requestDTO.getLocation())
+                .images(getImages(requestDTO.getImages()))
                 .dailyPrice(requestDTO.getDailyPrice())
-                .rate(requestDTO.getRate())
+                .rate(0.0)
                 .build();
 
         repository.save(hotel);
@@ -31,9 +37,9 @@ public class HotelService {
         return HotelResponseDTO.builder().build();
     }
 
-    public HotelResponseDTO find(HotelRequestDTO requestDTO) {
+    public HotelResponseDTO find(Long id) {
 
-        Hotel hotel = repository.findById(requestDTO.getId()).get();
+        Hotel hotel = repository.findById(id).get();
 
         return HotelResponseDTO.builder()
                 .id(hotel.getId())
@@ -42,6 +48,7 @@ public class HotelService {
                 .returnDate(hotel.getReturnDate())
                 .location(hotel.getLocation())
                 .dailyPrice(hotel.getDailyPrice())
+                .images(getImagesStringToObject(hotel.getImages()))
                 .rate(hotel.getRate())
                 .build();
     }
@@ -57,11 +64,19 @@ public class HotelService {
                 .departureDate(requestDTO.getDepartureDate())
                 .returnDate(requestDTO.getReturnDate())
                 .location(requestDTO.getLocation())
+                .images(getImages(requestDTO.getImages()))
                 .dailyPrice(requestDTO.getDailyPrice())
-                .rate(requestDTO.getRate())
                 .build());
 
-        return HotelResponseDTO.builder().build();
+        return HotelResponseDTO.builder()
+                .name(requestDTO.getName())
+                .departureDate(requestDTO.getDepartureDate())
+                .returnDate(requestDTO.getReturnDate())
+                .location(requestDTO.getLocation())
+                .images(requestDTO.getImages())
+                .dailyPrice(requestDTO.getDailyPrice())
+                .rate(requestDTO.getRate())
+                .build();
     }
 
     public HotelResponseDTO delete(Long id) {
@@ -76,5 +91,38 @@ public class HotelService {
 
     public List<Hotel> getAllHotels() {
         return repository.findAll();
+    }
+
+    public void rate(HotelRequestDTO request) {
+        Hotel hotel = repository.findById(request.getId()).get();
+        Double updatedRate = (hotel.getRate() + request.getRate()) /  2 ;
+        repository.save(Hotel.builder()
+                        .id(request.getId())
+                        .name(hotel.getName())
+                        .departureDate(hotel.getDepartureDate())
+                        .returnDate(hotel.getReturnDate())
+                        .location(hotel.getLocation())
+                        .images(hotel.getImages())
+                        .rate(updatedRate)
+                        .dailyPrice(hotel.getDailyPrice())
+                        .build());
+    }
+
+    public List<Image> getImages(List<String> list) {
+        List<Image> images = new ArrayList<>();
+        for (int i = 0; i < list.size(); i++) {
+            Image image = Image.builder().image(list.get(i)).build();
+            images.add(image);
+            imageRepository.save(image);
+        }
+        return images;
+    }
+
+    public static List<String> getImagesStringToObject(List<Image> list) {
+        List<String> images = new ArrayList<>();
+        for (int i = 0; i < list.size(); i++) {
+            images.add(list.get(i).getImage());
+        }
+        return images;
     }
 }

@@ -37,7 +37,7 @@ public class Hotel {
     private String location;
 
     @Column(name = "rate")
-    private String rate;
+    private Double rate;
 
     @CreatedDate
     @Column(name = "departureDate")
@@ -48,7 +48,7 @@ public class Hotel {
     private String returnDate;
 
     @Column(name = "dailyPrice")
-    private String dailyPrice;
+    private Double dailyPrice;
 
     @OneToMany(targetEntity = AdditionalInfo.class, cascade={CascadeType.PERSIST, CascadeType.MERGE,CascadeType.REFRESH}, orphanRemoval=true)
     @JoinColumn(name = "additionalInfo_fk", referencedColumnName = "id")

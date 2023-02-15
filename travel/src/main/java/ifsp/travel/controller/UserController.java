@@ -17,17 +17,6 @@ public class UserController {
     @Autowired
     UserService userService;
 
-    @GetMapping("/user")
-    @Transactional
-    public ResponseEntity<?> getUser(@RequestBody UserRequestDTO userRequestDTO) {
-
-        UserResponseDTO response = userService.authenticate(userRequestDTO);
-        if (response.getError()==null){
-            return ResponseEntity.ok(response);
-        }
-        return ResponseEntity.badRequest().body(response.getError());
-    }
-
     @PostMapping("/user")
     @Transactional
     public ResponseEntity<?> createUser(
@@ -41,10 +30,24 @@ public class UserController {
         return ResponseEntity.badRequest().body(saveUser.getError());
     }
 
+    @GetMapping("/user")
+    @Transactional
+    public ResponseEntity<?> getUser(
+            @RequestParam(value = "username", required = true) String username,
+            @RequestParam(value = "password", required = true) String password) {
+
+        UserResponseDTO response = userService.authenticate(username,password);
+        if (response.getError()==null){
+            return ResponseEntity.ok(response);
+        }
+        return ResponseEntity.badRequest().body(response.getError());
+    }
+
     @DeleteMapping("/user")
     @Transactional
-    public ResponseEntity deleteUser(@RequestBody UserRequestDTO request) {
-        UserResponseDTO userResponseDTO = userService.delete(request.getUsername());
+    public ResponseEntity deleteUser(
+            @RequestParam(value = "id", required = true) Long id) {
+        UserResponseDTO userResponseDTO = userService.delete(id);
         if(userResponseDTO.getError()==null) {
             return ResponseEntity.ok().build();
         }

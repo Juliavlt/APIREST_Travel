@@ -56,8 +56,8 @@ public class UserService {
         return UserResponseDTO.builder().build();
     }
 
-    public UserResponseDTO delete(String username) {
-        User user = repository.findByUsername(username);
+    public UserResponseDTO delete(Long id) {
+        User user = repository.findById(id).get();
         if (!ObjectUtils.isEmpty(user)) {
             repository.delete(user);
             return UserResponseDTO.builder().build();
@@ -65,9 +65,9 @@ public class UserService {
         return UserResponseDTO.builder().error("Usuário não existe.").build();
     }
 
-    public UserResponseDTO authenticate(UserRequestDTO request) {
-        User user = repository.findByUsername(request.getUsername());
-        if (!ObjectUtils.isEmpty(user) && user.getPassword().equals(request.getPassword())) {
+    public UserResponseDTO authenticate(String username, String password) {
+        User user = repository.findByUsername(username);
+        if (!ObjectUtils.isEmpty(user) && user.getPassword().equals(password)) {
             return UserResponseDTO.builder()
                     .username(user.getUsername())
                     .name(user.getName())
@@ -75,7 +75,7 @@ public class UserService {
                     .build();
         }
         if (!ObjectUtils.isEmpty(user) &&
-                    !user.getPassword().equals(request.getPassword())) {
+                    !user.getPassword().equals(password)) {
                 return UserResponseDTO.builder().error("Dados incorretos!").build();
             }
 

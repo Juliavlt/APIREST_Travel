@@ -8,7 +8,6 @@ import ifsp.travel.model.Image;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
-import org.thymeleaf.cache.ICacheManager;
 
 import java.util.List;
 
@@ -25,7 +24,7 @@ public class Flight {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @OneToMany(targetEntity = Image.class, cascade={CascadeType.PERSIST, CascadeType.MERGE,CascadeType.REFRESH}, orphanRemoval=true)
+    @ManyToMany(targetEntity = Image.class, cascade={CascadeType.PERSIST, CascadeType.MERGE,CascadeType.REFRESH})
     @JoinColumn(name = "images_fk", referencedColumnName = "id")
     private List<Image> images;
 
@@ -58,7 +57,7 @@ public class Flight {
     @Column(name = "classType")
     private String classType;
 
-    @OneToMany(targetEntity = AdditionalInfo.class, cascade={CascadeType.PERSIST, CascadeType.MERGE,CascadeType.REFRESH}, orphanRemoval=true)
+    @ManyToMany(targetEntity = AdditionalInfo.class, cascade={CascadeType.PERSIST, CascadeType.MERGE,CascadeType.REFRESH})
     @JoinColumn(name = "additionalInfo_fk", referencedColumnName = "id")
     private List<AdditionalInfo> additional;
 
