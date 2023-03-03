@@ -33,9 +33,9 @@ public class PackageController {
 
     @GetMapping("/packages")
     @Transactional
-    public ResponseEntity<?> getPackage(@RequestBody PackageRequestDTO packagesRequestDTO) {
+    public ResponseEntity<?> getPackage(@RequestParam(value = "id", required = true) Long id) {
 
-        PackageResponseDTO response = packagesService.find(packagesRequestDTO);
+        PackageResponseDTO response = packagesService.find(id);
         if (response.getError()==null){
             return ResponseEntity.ok(response);
         }
@@ -44,8 +44,8 @@ public class PackageController {
 
     @DeleteMapping("/packages")
     @Transactional
-    public ResponseEntity deletePackage(@RequestBody PackageRequestDTO request) {
-        PackageResponseDTO packagesResponseDTO = packagesService.delete(request);
+    public ResponseEntity deletePackage(@RequestParam(value = "id", required = true) Long id) {
+        PackageResponseDTO packagesResponseDTO = packagesService.delete(id);
         if(packagesResponseDTO.getError()==null) {
             return ResponseEntity.ok().build();
         }

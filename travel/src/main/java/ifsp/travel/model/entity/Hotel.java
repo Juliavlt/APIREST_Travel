@@ -29,7 +29,7 @@ public class Hotel {
     @Column(name = "name")
     private String name;
 
-    @OneToMany(targetEntity = Image.class, cascade={CascadeType.PERSIST, CascadeType.MERGE,CascadeType.REFRESH}, orphanRemoval=true)
+    @ManyToMany(targetEntity = Image.class, cascade={CascadeType.PERSIST, CascadeType.MERGE,CascadeType.REFRESH})
     @JoinColumn(name = "images_fk", referencedColumnName = "id")
     private List<Image> images;
 

@@ -48,9 +48,9 @@ public class PackageService {
         return PackageResponseDTO.builder().build();
     }
 
-    public PackageResponseDTO find(PackageRequestDTO requestDTO) {
+    public PackageResponseDTO find(Long id) {
 
-        Package pack = repository.findById(requestDTO.getId()).get();
+        Package pack = repository.findById(id).get();
 
         return PackageResponseDTO.builder()
                 .id(pack.getId())
@@ -105,8 +105,8 @@ public class PackageService {
                 .build();
     }
 
-    public PackageResponseDTO delete(PackageRequestDTO request) {
-        Package pack = repository.findById(request.getId()).get();
+    public PackageResponseDTO delete(Long id) {
+        Package pack = repository.findById(id).get();
         if (!ObjectUtils.isEmpty(pack)) {
             repository.delete(pack);
             return PackageResponseDTO.builder().build();

@@ -1,9 +1,11 @@
 package ifsp.travel.service;
 
+import ifsp.travel.model.AdditionalInfo;
 import ifsp.travel.model.Image;
 import ifsp.travel.model.entity.Hotel;
 import ifsp.travel.model.dto.HotelRequestDTO;
 import ifsp.travel.model.dto.HotelResponseDTO;
+import ifsp.travel.repository.AdditionalInfoRepository;
 import ifsp.travel.repository.HotelRepository;
 import ifsp.travel.repository.ImageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +21,7 @@ public class HotelService {
 
     @Autowired private ImageRepository imageRepository;
     @Autowired private HotelRepository repository;
+    @Autowired private AdditionalInfoRepository additionalInfoRepository;
 
     public HotelResponseDTO create(HotelRequestDTO requestDTO) {
 
@@ -29,6 +32,7 @@ public class HotelService {
                 .location(requestDTO.getLocation())
                 .images(getImages(requestDTO.getImages()))
                 .dailyPrice(requestDTO.getDailyPrice())
+                .additional(getAdditionalInfo(requestDTO.getAdditional()))
                 .rate(0.0)
                 .build();
 
@@ -49,6 +53,7 @@ public class HotelService {
                 .location(hotel.getLocation())
                 .dailyPrice(hotel.getDailyPrice())
                 .images(getImagesStringToObject(hotel.getImages()))
+                .additional(getAdditionalInfo(hotel.getAdditional()))
                 .rate(hotel.getRate())
                 .build();
     }
@@ -65,6 +70,7 @@ public class HotelService {
                 .returnDate(requestDTO.getReturnDate())
                 .location(requestDTO.getLocation())
                 .images(getImages(requestDTO.getImages()))
+                .additional(getAdditionalInfo(requestDTO.getAdditional()))
                 .dailyPrice(requestDTO.getDailyPrice())
                 .build());
 
@@ -75,6 +81,7 @@ public class HotelService {
                 .location(requestDTO.getLocation())
                 .images(requestDTO.getImages())
                 .dailyPrice(requestDTO.getDailyPrice())
+                .additional(getAdditionalInfo(requestDTO.getAdditional()))
                 .rate(requestDTO.getRate())
                 .build();
     }
@@ -104,24 +111,54 @@ public class HotelService {
                         .location(hotel.getLocation())
                         .images(hotel.getImages())
                         .rate(updatedRate)
-                        .dailyPrice(hotel.getDailyPrice())
+                .additional(getAdditionalInfo(hotel.getAdditional()))
+                .dailyPrice(hotel.getDailyPrice())
                         .build());
     }
 
     public List<Image> getImages(List<String> list) {
         List<Image> images = new ArrayList<>();
-        for (int i = 0; i < list.size(); i++) {
-            Image image = Image.builder().image(list.get(i)).build();
-            images.add(image);
-            imageRepository.save(image);
+        if (list != null){
+            for (int i = 0; i < list.size(); i++) {
+                Image image = Image.builder().image(list.get(i)).build();
+                imageRepository.save(image);
+                images.add(image);
+            }
         }
         return images;
     }
 
     public static List<String> getImagesStringToObject(List<Image> list) {
         List<String> images = new ArrayList<>();
-        for (int i = 0; i < list.size(); i++) {
-            images.add(list.get(i).getImage());
+        if (list != null){
+            for (int i = 0; i < list.size(); i++) {
+                images.add(list.get(i).getImage());
+            }
+        }
+        return images;
+    }
+
+    public List<AdditionalInfo> getAdditionalInfo(List<AdditionalInfo> list) {
+        List<AdditionalInfo> additionalInfo = new ArrayList<>();
+        if (list != null){
+            for (int i = 0; i < list.size(); i++) {
+                AdditionalInfo info = AdditionalInfo.builder()
+                        .title(list.get(i).getTitle())
+                        .information(list.get(i).getInformation())
+                        .build();
+                additionalInfoRepository.save(info);
+                additionalInfo.add(info);
+            }
+        }
+        return additionalInfo;
+    }
+
+    public static List<String> getAdditionalInfoStringToObject(List<Image> list) {
+        List<String> images = new ArrayList<>();
+        if (list != null){
+            for (int i = 0; i < list.size(); i++) {
+                images.add(list.get(i).getImage());
+            }
         }
         return images;
     }
