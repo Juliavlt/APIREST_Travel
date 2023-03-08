@@ -19,9 +19,9 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class PackageRequestDTO implements Serializable {
-    private long id;
+    private Long id;
     private String mainImage;
-    private List<Image> images;
+    private List<String> images;
     private String departureDate;
     private String returnDate;
     private String origin;

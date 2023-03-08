@@ -27,12 +27,12 @@ public class PackageService {
 
     public PackageResponseDTO create(PackageRequestDTO requestDTO) {
 
-        Hotel hotel = hotelRepository.findById(requestDTO.getId()).orElse(null);
-        Flight flight = flightRepository.findById(requestDTO.getId()).orElse(null);
+        Hotel hotel = hotelRepository.findById(requestDTO.getIdHotel()).orElse(null);
+        Flight flight = flightRepository.findById(requestDTO.getIdFlight()).orElse(null);
 
         Package pack = Package.builder()
                 .mainImage(requestDTO.getMainImage())
-                .images(requestDTO.getImages())
+                .images(getImages(requestDTO.getImages()))
                 .departureDate(requestDTO.getDepartureDate())
                 .returnDate(requestDTO.getReturnDate())
                 .origin(requestDTO.getOrigin())
@@ -79,7 +79,7 @@ public class PackageService {
         repository.save(Package.builder()
                 .id(pack.getId())
                 .mainImage(requestDTO.getMainImage())
-                .images(requestDTO.getImages())
+                .images(getImages(requestDTO.getImages()))
                 .departureDate(requestDTO.getDepartureDate())
                 .returnDate(requestDTO.getReturnDate())
                 .origin(requestDTO.getOrigin())
@@ -93,7 +93,7 @@ public class PackageService {
         return PackageResponseDTO.builder()
                 .id(pack.getId())
                 .mainImage(requestDTO.getMainImage())
-                .images(requestDTO.getImages())
+                .images(getImages(requestDTO.getImages()))
                 .departureDate(requestDTO.getDepartureDate())
                 .returnDate(requestDTO.getReturnDate())
                 .origin(requestDTO.getOrigin())
@@ -106,7 +106,7 @@ public class PackageService {
     }
 
     public PackageResponseDTO delete(Long id) {
-        Package pack = repository.findById(id).get();
+        Package pack = repository.findById(id).orElse(null);
         if (!ObjectUtils.isEmpty(pack)) {
             repository.delete(pack);
             return PackageResponseDTO.builder().build();
