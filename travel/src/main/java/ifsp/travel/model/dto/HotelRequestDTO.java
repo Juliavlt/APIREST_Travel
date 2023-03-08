@@ -30,6 +30,8 @@ public class HotelRequestDTO implements Serializable {
 
     private String returnDate;
 
+    private Integer availableRooms;
+
     private Double dailyPrice;
 
     private List<AdditionalInfo> additional;

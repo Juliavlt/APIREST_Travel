@@ -50,6 +50,9 @@ public class Hotel {
     @Column(name = "dailyPrice")
     private Double dailyPrice;
 
+    @Column(name = "availableRooms")
+    private Integer availableRooms;
+
     @OneToMany(targetEntity = AdditionalInfo.class, cascade={CascadeType.PERSIST, CascadeType.MERGE,CascadeType.REFRESH}, orphanRemoval=true)
     @JoinColumn(name = "additionalInfo_fk", referencedColumnName = "id")
     private List<AdditionalInfo> additional;

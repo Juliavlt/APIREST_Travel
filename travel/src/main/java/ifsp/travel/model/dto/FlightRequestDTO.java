@@ -30,7 +30,7 @@ public class FlightRequestDTO implements Serializable {
 
     private Long price;
 
-    private Integer vacancies;
+    private Integer availableSeats;
 
     private String classType;
 

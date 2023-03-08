@@ -51,8 +51,8 @@ public class Flight {
     @Column(name = "price")
     private Long price;
 
-    @Column(name = "vacancies")
-    private Integer vacancies;
+    @Column(name = "availableSeats")
+    private Integer availableSeats;
 
     @Column(name = "classType")
     private String classType;

@@ -31,6 +31,7 @@ public class HotelService {
                 .returnDate(requestDTO.getReturnDate())
                 .location(requestDTO.getLocation())
                 .images(getImages(requestDTO.getImages()))
+                .availableRooms(requestDTO.getAvailableRooms())
                 .dailyPrice(requestDTO.getDailyPrice())
                 .additional(getAdditionalInfo(requestDTO.getAdditional()))
                 .rate(0.0)
@@ -50,6 +51,7 @@ public class HotelService {
                 .name(hotel.getName())
                 .departureDate(hotel.getDepartureDate())
                 .returnDate(hotel.getReturnDate())
+                .availableRooms(hotel.getAvailableRooms())
                 .location(hotel.getLocation())
                 .dailyPrice(hotel.getDailyPrice())
                 .images(getImagesStringToObject(hotel.getImages()))
@@ -68,6 +70,7 @@ public class HotelService {
                 .name(requestDTO.getName())
                 .departureDate(requestDTO.getDepartureDate())
                 .returnDate(requestDTO.getReturnDate())
+                .availableRooms(requestDTO.getAvailableRooms())
                 .location(requestDTO.getLocation())
                 .images(getImages(requestDTO.getImages()))
                 .additional(getAdditionalInfo(requestDTO.getAdditional()))
@@ -79,6 +82,7 @@ public class HotelService {
                 .departureDate(requestDTO.getDepartureDate())
                 .returnDate(requestDTO.getReturnDate())
                 .location(requestDTO.getLocation())
+                .availableRooms(requestDTO.getAvailableRooms())
                 .images(requestDTO.getImages())
                 .dailyPrice(requestDTO.getDailyPrice())
                 .additional(getAdditionalInfo(requestDTO.getAdditional()))
@@ -103,17 +107,8 @@ public class HotelService {
     public void rate(HotelRequestDTO request) {
         Hotel hotel = repository.findById(request.getId()).get();
         Double updatedRate = (hotel.getRate() + request.getRate()) /  2 ;
-        repository.save(Hotel.builder()
-                        .id(request.getId())
-                        .name(hotel.getName())
-                        .departureDate(hotel.getDepartureDate())
-                        .returnDate(hotel.getReturnDate())
-                        .location(hotel.getLocation())
-                        .images(hotel.getImages())
-                        .rate(updatedRate)
-                .additional(getAdditionalInfo(hotel.getAdditional()))
-                .dailyPrice(hotel.getDailyPrice())
-                        .build());
+        hotel.setRate(updatedRate);
+        repository.save(hotel);
     }
 
     public List<Image> getImages(List<String> list) {

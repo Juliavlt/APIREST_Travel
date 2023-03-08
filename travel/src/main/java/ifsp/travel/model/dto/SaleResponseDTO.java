@@ -1,8 +1,8 @@
 package ifsp.travel.model.dto;
 
+import ifsp.travel.model.Image;
 import ifsp.travel.model.entity.Flight;
 import ifsp.travel.model.entity.Hotel;
-import ifsp.travel.model.entity.Package;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -15,24 +15,10 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserResponseDTO implements Serializable {
-
-    private static final long serialVersionUID = 1L;
+public class SaleResponseDTO implements Serializable {
 
     private long id;
-
-    private String username;
-
-    private String name;
-
-    private String profileType;
-
-    private List<Hotel> hotels;
-
-    private List<Flight> flights;
-
-    private List<Package> packages;
-
     private String error;
-}
+    private String response;
 
+}

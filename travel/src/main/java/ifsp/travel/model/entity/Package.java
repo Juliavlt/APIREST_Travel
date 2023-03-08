@@ -43,6 +43,9 @@ public class Package {
     @Column(name = "origin")
     private String origin;
 
+    @Column(name = "available")
+    private Integer available;
+
     @Column(name = "destiny")
     private String destiny;
 

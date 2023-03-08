@@ -22,6 +22,7 @@ public class PackageResponseDTO implements Serializable {
     private String mainImage;
     private List<Image> images;
     private String departureDate;
+    private Integer available;
     private String returnDate;
     private String origin;
     private String destiny;

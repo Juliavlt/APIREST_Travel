@@ -29,6 +29,8 @@ public class HotelResponseDTO implements Serializable {
 
     private String returnDate;
 
+    private Integer availableRooms;
+
     private Double dailyPrice;
 
     private List<AdditionalInfo> additional;

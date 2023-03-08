@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static ifsp.travel.model.Constants.*;
@@ -31,6 +32,9 @@ public class UserService {
                 .email(requestDTO.getEmail())
                 .phone(requestDTO.getPhone())
                 .profileType(getProfileType(requestDTO.getUsername()))
+                .hotels(new ArrayList<>())
+                .flights(new ArrayList<>())
+                .packages(new ArrayList<>())
                 .build();
 
         repository.save(user);
@@ -74,8 +78,7 @@ public class UserService {
                     .profileType(user.getProfileType())
                     .build();
         }
-        if (!ObjectUtils.isEmpty(user) &&
-                    !user.getPassword().equals(password)) {
+        if (!ObjectUtils.isEmpty(user) && !user.getPassword().equals(password)) {
                 return UserResponseDTO.builder().error("Dados incorretos!").build();
             }
 
