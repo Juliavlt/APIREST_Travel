@@ -75,7 +75,7 @@ public class UserController {
         SaleResponseDTO sale = saleService.sale(saleRequestDTO);
 
         if(sale.getError()==null){
-            return ResponseEntity.ok().build();
+            return ResponseEntity.ok("Venda realizada com sucesso");
         }
         return ResponseEntity.badRequest().body(sale.getError());
     }

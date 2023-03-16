@@ -76,6 +76,9 @@ public class UserService {
                     .username(user.getUsername())
                     .name(user.getName())
                     .profileType(user.getProfileType())
+                    .hotels(user.getHotels())
+                    .flights(user.getFlights())
+                    .packages(user.getPackages())
                     .build();
         }
         if (!ObjectUtils.isEmpty(user) && !user.getPassword().equals(password)) {

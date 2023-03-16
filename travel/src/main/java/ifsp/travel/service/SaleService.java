@@ -60,7 +60,7 @@ public class SaleService {
         } else if (pack != null){
             Integer availableRooms = pack.getHotel().getAvailableRooms();
             Integer availableSeats = pack.getFlight().getAvailableSeats();
-            if (availableRooms!=0 || availableSeats!=0){
+            if (availableRooms!=0 && availableSeats!=0){
                 pack.setAvailable(1);
                 Hotel hotelRooms = pack.getHotel();
                 Flight flightSeats = pack.getFlight();
