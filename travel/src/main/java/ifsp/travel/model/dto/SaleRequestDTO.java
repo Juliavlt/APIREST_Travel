@@ -13,11 +13,7 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class SaleRequestDTO implements Serializable {
-
-    private static final long serialVersionUID = 1L;
-
-    private Long id;
+public class SaleRequestDTO{
 
     private Long idUser;
 

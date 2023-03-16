@@ -1,7 +1,10 @@
 package ifsp.travel.controller;
+import ifsp.travel.model.dto.SaleRequestDTO;
+import ifsp.travel.model.dto.SaleResponseDTO;
 import ifsp.travel.model.entity.User;
 import ifsp.travel.model.dto.UserRequestDTO;
 import ifsp.travel.model.dto.UserResponseDTO;
+import ifsp.travel.service.SaleService;
 import ifsp.travel.service.UserService;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +19,9 @@ public class UserController {
 
     @Autowired
     UserService userService;
+
+    @Autowired
+    SaleService saleService;
 
     @PostMapping("/user")
     @Transactional
@@ -59,5 +65,18 @@ public class UserController {
     public ResponseEntity<List<User>> getUsers(){
         List<User> response = userService.getAllUsers();
         return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("/sale")
+    @Transactional
+    public ResponseEntity<?> sale(
+            @RequestBody SaleRequestDTO saleRequestDTO) {
+
+        SaleResponseDTO sale = saleService.sale(saleRequestDTO);
+
+        if(sale.getError()==null){
+            return ResponseEntity.ok().build();
+        }
+        return ResponseEntity.badRequest().body(sale.getError());
     }
 }

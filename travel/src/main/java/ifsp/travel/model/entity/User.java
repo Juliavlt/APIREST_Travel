@@ -44,15 +44,15 @@ public class User {
     @Column(name = "phone")
     private String phone;
 
-    @OneToMany(targetEntity = AdditionalInfo.class, cascade={CascadeType.PERSIST, CascadeType.MERGE,CascadeType.REFRESH}, orphanRemoval=true)
+    @OneToMany(targetEntity = Hotel.class, cascade={CascadeType.PERSIST, CascadeType.MERGE,CascadeType.REFRESH}, orphanRemoval=true)
     @JoinColumn(name = "hotels_fk", referencedColumnName = "id")
     private List<Hotel> hotels;
 
-    @OneToMany(targetEntity = AdditionalInfo.class, cascade={CascadeType.PERSIST, CascadeType.MERGE,CascadeType.REFRESH}, orphanRemoval=true)
+    @OneToMany(targetEntity = Flight.class, cascade={CascadeType.PERSIST, CascadeType.MERGE,CascadeType.REFRESH}, orphanRemoval=true)
     @JoinColumn(name = "flights_fk", referencedColumnName = "id")
     private List<Flight> flights;
 
-    @OneToMany(targetEntity = AdditionalInfo.class, cascade={CascadeType.PERSIST, CascadeType.MERGE,CascadeType.REFRESH}, orphanRemoval=true)
+    @OneToMany(targetEntity = Package.class, cascade={CascadeType.PERSIST, CascadeType.MERGE,CascadeType.REFRESH}, orphanRemoval=true)
     @JoinColumn(name = "packages_fk", referencedColumnName = "id")
     private List<Package> packages;
 }

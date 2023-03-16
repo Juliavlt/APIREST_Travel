@@ -26,10 +26,10 @@ public class SaleService {
     @Autowired private UserRepository userRepository;
 
     public SaleResponseDTO sale(SaleRequestDTO requestDTO) {
-        Hotel hotel = hotelRepository.findById(requestDTO.getIdHotel()).orElse(null);
-        Flight flight = flightRepository.findById(requestDTO.getIdFlight()).orElse(null);
-        Package pack = packageRepository.findById(requestDTO.getIdPackage()).orElse(null);
-        User user = userRepository.findById(requestDTO.getIdUser()).orElse(null);
+        Hotel hotel = requestDTO.getIdHotel() != null ? hotelRepository.findById(requestDTO.getIdHotel()).get() : null;
+        Flight flight = requestDTO.getIdFlight() != null ? flightRepository.findById(requestDTO.getIdFlight()).get() : null;
+        Package pack = requestDTO.getIdPackage() != null ? packageRepository.findById(requestDTO.getIdPackage()).get() : null;
+        User user = requestDTO.getIdUser() != null ? userRepository.findById(requestDTO.getIdUser()).get() : null;
 
         if ( hotel != null) {
             Integer availableRooms = hotel.getAvailableRooms();
@@ -62,6 +62,12 @@ public class SaleService {
             Integer availableSeats = pack.getFlight().getAvailableSeats();
             if (availableRooms!=0 || availableSeats!=0){
                 pack.setAvailable(1);
+                Hotel hotelRooms = pack.getHotel();
+                Flight flightSeats = pack.getFlight();
+                hotelRooms.setAvailableRooms(hotelRooms.getAvailableRooms() - requestDTO.getPersons());
+                flightSeats.setAvailableSeats(flightSeats.getAvailableSeats() - requestDTO.getPersons());
+                hotelRepository.save(hotelRooms);
+                flightRepository.save(flightSeats);
                 packageRepository.save(pack);
                 List<Package> packages = user.getPackages();
                 packages.add(pack);
