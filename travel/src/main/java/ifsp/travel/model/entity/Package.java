@@ -65,8 +65,4 @@ public class Package {
     @JoinColumn(name = "flight_fk", referencedColumnName = "id")
     private Flight flight;
 
-    @OneToMany(targetEntity = PackageType.class, cascade={CascadeType.PERSIST, CascadeType.MERGE,CascadeType.REFRESH})
-    @JoinColumn(name = "packageType_fk", referencedColumnName = "id")
-    private List<PackageType> packageType;
-
 }
