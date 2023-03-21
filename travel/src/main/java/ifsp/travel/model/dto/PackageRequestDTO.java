@@ -30,4 +30,6 @@ public class PackageRequestDTO implements Serializable {
     private String price;
     private Long idHotel;
     private Long idFlight;
+    private Boolean favored;
+
 }

@@ -33,6 +33,8 @@ public class HotelResponseDTO implements Serializable {
 
     private Double dailyPrice;
 
+    private Boolean favored;
+
     private List<AdditionalInfo> additional;
 
     private String error;

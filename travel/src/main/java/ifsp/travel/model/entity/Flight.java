@@ -24,6 +24,9 @@ public class Flight {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
+    @Column(name = "idUser", nullable = false)
+    private Long idUser;
+
     @ManyToMany(targetEntity = Image.class, cascade={CascadeType.PERSIST, CascadeType.MERGE,CascadeType.REFRESH})
     @JoinColumn(name = "images_fk", referencedColumnName = "id")
     private List<Image> images;
@@ -44,6 +47,9 @@ public class Flight {
 
     @Column(name = "origin")
     private String origin;
+
+    @Column(name = "favored")
+    private Boolean favored;
 
     @Column(name = "destiny")
     private String destiny;

@@ -6,10 +6,8 @@ import ifsp.travel.model.dto.PackageResponseDTO;
 import ifsp.travel.model.entity.Flight;
 import ifsp.travel.model.entity.Hotel;
 import ifsp.travel.model.entity.Package;
-import ifsp.travel.repository.FlightRepository;
-import ifsp.travel.repository.HotelRepository;
-import ifsp.travel.repository.ImageRepository;
-import ifsp.travel.repository.PackageRepository;
+import ifsp.travel.model.entity.User;
+import ifsp.travel.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
@@ -22,6 +20,7 @@ public class PackageService {
 
     @Autowired private PackageRepository repository;
     @Autowired private HotelRepository hotelRepository;
+    @Autowired private UserRepository userRepository;
     @Autowired private FlightRepository flightRepository;
     @Autowired private ImageRepository imageRepository;
 
@@ -33,6 +32,7 @@ public class PackageService {
         Package pack = Package.builder()
                 .mainImage(requestDTO.getMainImage())
                 .images(getImages(requestDTO.getImages()))
+                .favored(requestDTO.getFavored())
                 .departureDate(requestDTO.getDepartureDate())
                 .returnDate(requestDTO.getReturnDate())
                 .origin(requestDTO.getOrigin())
@@ -44,6 +44,18 @@ public class PackageService {
                 .build();
 
         repository.save(pack);
+        User userFlight  = userRepository.findById(pack.getFlight().getIdUser()).orElse(null);
+        User userHotel  = userRepository.findById(pack.getHotel().getIdUser()).orElse(null);
+        if (userFlight!=null && userHotel!=null){
+            List<Package> packagesUserFlight = userFlight.getPackages();
+            packagesUserFlight.add(pack);
+            userFlight.setPackages(packagesUserFlight);
+            List<Package> packagesUserHotel = userHotel.getPackages();
+            packagesUserHotel.add(pack);
+            userHotel.setPackages(packagesUserHotel);
+            userRepository.save(userFlight);
+            userRepository.save(userHotel);
+        }
 
         return PackageResponseDTO.builder().build();
     }
@@ -62,6 +74,7 @@ public class PackageService {
                 .destiny(pack.getDestiny())
                 .title(pack.getTitle())
                 .price(pack.getPrice())
+                .favored(pack.getFavored())
                 .hotel(pack.getHotel())
                 .flight(pack.getFlight())
                 .build();
@@ -84,6 +97,7 @@ public class PackageService {
                 .returnDate(requestDTO.getReturnDate())
                 .origin(requestDTO.getOrigin())
                 .destiny(requestDTO.getDestiny())
+                .favored(requestDTO.getFavored())
                 .title(requestDTO.getTitle())
                 .price(requestDTO.getPrice())
                 .hotel(hotel)
@@ -98,6 +112,7 @@ public class PackageService {
                 .returnDate(requestDTO.getReturnDate())
                 .origin(requestDTO.getOrigin())
                 .destiny(requestDTO.getDestiny())
+                .favored(requestDTO.getFavored())
                 .title(requestDTO.getTitle())
                 .price(requestDTO.getPrice())
                 .hotel(hotel)

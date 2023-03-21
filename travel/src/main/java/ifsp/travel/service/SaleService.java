@@ -5,15 +5,15 @@ import ifsp.travel.model.dto.PackageRequestDTO;
 import ifsp.travel.model.dto.PackageResponseDTO;
 import ifsp.travel.model.dto.SaleRequestDTO;
 import ifsp.travel.model.dto.SaleResponseDTO;
-import ifsp.travel.model.entity.Flight;
-import ifsp.travel.model.entity.Hotel;
+import ifsp.travel.model.entity.*;
 import ifsp.travel.model.entity.Package;
-import ifsp.travel.model.entity.User;
 import ifsp.travel.repository.*;
+import org.apache.logging.log4j.message.StringFormattedMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
+import java.lang.reflect.Member;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,7 +40,13 @@ public class SaleService {
                 List<Hotel> hotels = user.getHotels();
                 hotels.add(hotel);
                 user.setHotels(hotels);
+                User vendedor = userRepository.findById(hotel.getIdUser()).get();
+                List<Message> messages = vendedor.getMessages();
+                Message message = Message.builder().message("Venda do Hotel " + hotel.getName() + " realizada com sucesso!").build();
+                messages.add(message);
+                vendedor.setMessages(messages);
                 userRepository.save(user);
+                userRepository.save(vendedor);
             } else {
                 return SaleResponseDTO.builder().error("Vagas indisponíveis").build();
             }
@@ -53,7 +59,15 @@ public class SaleService {
                 List<Flight> flights = user.getFlights();
                 flights.add(flight);
                 user.setFlights(flights);
+                User vendedor = userRepository.findById(flight.getIdUser()).get();
+                List<Message> messages = vendedor.getMessages();
+                Message message = Message.builder().message("Venda do Voo " + flight.getName() + " realizada com sucesso!").build();
+                messages.add(message);
+                vendedor.setMessages(messages);
+
                 userRepository.save(user);
+                userRepository.save(vendedor);
+
             } else {
                 return SaleResponseDTO.builder().error("Vagas indisponíveis").build();
             }
@@ -72,7 +86,13 @@ public class SaleService {
                 List<Package> packages = user.getPackages();
                 packages.add(pack);
                 user.setPackages(packages);
+                User vendedor = userRepository.findById(flight.getIdUser()).get();
+                List<Message> messages = vendedor.getMessages();
+                Message message = Message.builder().message("Venda do Pacote " + pack.getTitle() + " realizada com sucesso!").build();
+                messages.add(message);
+                vendedor.setMessages(messages);
                 userRepository.save(user);
+                userRepository.save(vendedor);
             } else {
                 pack.setAvailable(0);
                 packageRepository.save(pack);

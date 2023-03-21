@@ -26,7 +26,7 @@ public class UserController {
     @PostMapping("/user")
     @Transactional
     public ResponseEntity<?> createUser(
-            @RequestBody UserRequestDTO userRequestDTO) {
+            @RequestBody UserRequestDTO userRequestDTO) throws Exception {
 
         UserResponseDTO saveUser = userService.create(userRequestDTO);
 

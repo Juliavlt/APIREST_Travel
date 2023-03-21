@@ -19,7 +19,7 @@ public class UserService {
     @Autowired
     private UserRepository repository;
 
-    public UserResponseDTO create(UserRequestDTO requestDTO) {
+    public UserResponseDTO create(UserRequestDTO requestDTO) throws Exception {
 
         if (!ObjectUtils.isEmpty(repository.findByUsername(requestDTO.getUsername()))) {
             return UserResponseDTO.builder().error("Usuário já cadastrado.").build();
@@ -36,7 +36,6 @@ public class UserService {
                 .flights(new ArrayList<>())
                 .packages(new ArrayList<>())
                 .build();
-
         repository.save(user);
 
         return UserResponseDTO.builder().build();
@@ -52,6 +51,8 @@ public class UserService {
                 .id(user.getId())
                 .username(requestDTO.getUsername())
                 .name(requestDTO.getUsername())
+                .email(requestDTO.getEmail())
+                .phone(requestDTO.getPhone())
                 .password(requestDTO.getPassword())
                 .phone(requestDTO.getPhone())
                 .email(requestDTO.getEmail())
@@ -75,10 +76,13 @@ public class UserService {
             return UserResponseDTO.builder()
                     .username(user.getUsername())
                     .name(user.getName())
+                    .email(user.getEmail())
+                    .phone(user.getPhone())
                     .profileType(user.getProfileType())
                     .hotels(user.getHotels())
                     .flights(user.getFlights())
                     .packages(user.getPackages())
+                    .messages(user.getMessages())
                     .build();
         }
         if (!ObjectUtils.isEmpty(user) && !user.getPassword().equals(password)) {
@@ -88,11 +92,14 @@ public class UserService {
         return UserResponseDTO.builder().error("Usuário não existe.").build();
     }
 
-    private String getProfileType(String username) {
+    private String getProfileType(String username) throws Exception {
         if (username.length() == SIZE_CPF){
             return CPF;
-        } else
+        } else if (username.length() == SIZE_CNPJ){
             return CNPJ;
+        } else {
+            throw new Exception("Numero do cpf/cnpf inválido!");
+        }
     }
 
     public List<User> getAllUsers() {

@@ -25,6 +25,7 @@ public class PackageResponseDTO implements Serializable {
     private Integer available;
     private String returnDate;
     private String origin;
+    private Boolean favored;
     private String destiny;
     private String title;
     private String price;

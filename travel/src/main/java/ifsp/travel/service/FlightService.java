@@ -5,9 +5,11 @@ import ifsp.travel.model.Image;
 import ifsp.travel.model.entity.Flight;
 import ifsp.travel.model.dto.FlightRequestDTO;
 import ifsp.travel.model.dto.FlightResponseDTO;
+import ifsp.travel.model.entity.User;
 import ifsp.travel.repository.AdditionalInfoRepository;
 import ifsp.travel.repository.ImageRepository;
 import ifsp.travel.repository.FlightRepository;
+import ifsp.travel.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
@@ -19,6 +21,7 @@ import java.util.List;
 public class FlightService {
 
     @Autowired private FlightRepository repository;
+    @Autowired private UserRepository userRepository;
     @Autowired private ImageRepository imageRepository;
     @Autowired private AdditionalInfoRepository additionalInfoRepository;
 
@@ -26,10 +29,12 @@ public class FlightService {
 
         Flight flight = Flight.builder()
                 .name(requestDTO.getName())
+                .idUser(requestDTO.getIdUser())
                 .images(getImages(requestDTO.getImages()))
                 .airline(requestDTO.getAirline())
                 .destiny(requestDTO.getDestiny())
                 .origin(requestDTO.getOrigin())
+                .favored(requestDTO.getFavored())
                 .departureDate(requestDTO.getDepartureDate())
                 .returnDate(requestDTO.getReturnDate())
                 .price(requestDTO.getPrice())
@@ -39,6 +44,14 @@ public class FlightService {
                 .build();
 
         repository.save(flight);
+
+        User user  = userRepository.findById(requestDTO.getIdUser()).orElse(null);
+        if (user!=null){
+            List<Flight> flights = user.getFlights();
+            flights.add(flight);
+            user.setFlights(flights);
+            userRepository.save(user);
+        }
 
         return FlightResponseDTO.builder().build();
     }
@@ -53,6 +66,7 @@ public class FlightService {
                 .airline(flight.getAirline())
                 .destiny(flight.getDestiny())
                 .origin(flight.getOrigin())
+                .favored(flight.getFavored())
                 .departureDate(flight.getDepartureDate())
                 .returnDate(flight.getReturnDate())
                 .price(flight.getPrice())
@@ -75,6 +89,7 @@ public class FlightService {
                 .airline(requestDTO.getAirline())
                 .destiny(requestDTO.getDestiny())
                 .origin(requestDTO.getOrigin())
+                .favored(requestDTO.getFavored())
                 .departureDate(requestDTO.getDepartureDate())
                 .returnDate(requestDTO.getReturnDate())
                 .price(requestDTO.getPrice())
@@ -91,6 +106,7 @@ public class FlightService {
                 .destiny(requestDTO.getDestiny())
                 .origin(requestDTO.getOrigin())
                 .departureDate(requestDTO.getDepartureDate())
+                .favored(requestDTO.getFavored())
                 .returnDate(requestDTO.getReturnDate())
                 .price(requestDTO.getPrice())
                 .availableSeats(requestDTO.getAvailableSeats())

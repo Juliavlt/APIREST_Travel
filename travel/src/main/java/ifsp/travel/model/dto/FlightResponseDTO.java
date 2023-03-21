@@ -23,6 +23,8 @@ public class FlightResponseDTO implements Serializable {
 
     private String departureDate;
 
+    private Boolean favored;
+
     private String returnDate;
 
     private String origin;

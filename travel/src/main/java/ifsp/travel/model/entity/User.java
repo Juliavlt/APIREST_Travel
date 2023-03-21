@@ -44,6 +44,10 @@ public class User {
     @Column(name = "phone")
     private String phone;
 
+    @OneToMany(targetEntity = Message.class, cascade={CascadeType.PERSIST, CascadeType.MERGE,CascadeType.REFRESH}, orphanRemoval=true)
+    @JoinColumn(name = "messages_fk", referencedColumnName = "id")
+    private List<Message> messages;
+
     @OneToMany(targetEntity = Hotel.class, cascade={CascadeType.PERSIST, CascadeType.MERGE,CascadeType.REFRESH}, orphanRemoval=true)
     @JoinColumn(name = "hotels_fk", referencedColumnName = "id")
     private List<Hotel> hotels;

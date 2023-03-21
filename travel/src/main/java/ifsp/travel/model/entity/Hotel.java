@@ -26,6 +26,9 @@ public class Hotel {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
+    @Column(name = "idUser", nullable = false)
+    private Long idUser;
+
     @Column(name = "name")
     private String name;
 
@@ -38,6 +41,9 @@ public class Hotel {
 
     @Column(name = "rate")
     private Double rate;
+
+    @Column(name = "favored")
+    private Boolean favored;
 
     @CreatedDate
     @Column(name = "departureDate")

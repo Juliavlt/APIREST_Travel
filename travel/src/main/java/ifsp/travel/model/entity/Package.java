@@ -24,7 +24,6 @@ public class Package {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-
     @Column(name = "mainImage", nullable = false)
     private String mainImage;
 
@@ -42,6 +41,9 @@ public class Package {
 
     @Column(name = "origin")
     private String origin;
+
+    @Column(name = "favored")
+    private Boolean favored;
 
     @Column(name = "available")
     private Integer available;
@@ -63,8 +65,8 @@ public class Package {
     @JoinColumn(name = "flight_fk", referencedColumnName = "id")
     private Flight flight;
 
-/*    @OneToMany(targetEntity = PackageType.class, cascade={CascadeType.PERSIST, CascadeType.MERGE,CascadeType.REFRESH})
+    @OneToMany(targetEntity = PackageType.class, cascade={CascadeType.PERSIST, CascadeType.MERGE,CascadeType.REFRESH})
     @JoinColumn(name = "packageType_fk", referencedColumnName = "id")
-    private List<PackageType> packageType;*/
+    private List<PackageType> packageType;
 
 }

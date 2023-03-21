@@ -2,12 +2,15 @@ package ifsp.travel.service;
 
 import ifsp.travel.model.AdditionalInfo;
 import ifsp.travel.model.Image;
+import ifsp.travel.model.entity.Flight;
 import ifsp.travel.model.entity.Hotel;
 import ifsp.travel.model.dto.HotelRequestDTO;
 import ifsp.travel.model.dto.HotelResponseDTO;
+import ifsp.travel.model.entity.User;
 import ifsp.travel.repository.AdditionalInfoRepository;
 import ifsp.travel.repository.HotelRepository;
 import ifsp.travel.repository.ImageRepository;
+import ifsp.travel.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
@@ -21,6 +24,7 @@ public class HotelService {
 
     @Autowired private ImageRepository imageRepository;
     @Autowired private HotelRepository repository;
+    @Autowired private UserRepository userRepository;
     @Autowired private AdditionalInfoRepository additionalInfoRepository;
 
     public HotelResponseDTO create(HotelRequestDTO requestDTO) {
@@ -28,8 +32,10 @@ public class HotelService {
         Hotel hotel = Hotel.builder()
                 .name(requestDTO.getName())
                 .departureDate(requestDTO.getDepartureDate())
+                .idUser(requestDTO.getIdUser())
                 .returnDate(requestDTO.getReturnDate())
                 .location(requestDTO.getLocation())
+                .favored(requestDTO.getFavored())
                 .images(getImages(requestDTO.getImages()))
                 .availableRooms(requestDTO.getAvailableRooms())
                 .dailyPrice(requestDTO.getDailyPrice())
@@ -38,6 +44,13 @@ public class HotelService {
                 .build();
 
         repository.save(hotel);
+        User user  = userRepository.findById(requestDTO.getIdUser()).orElse(null);
+        if (user!=null){
+            List<Hotel> hotels = user.getHotels();
+            hotels.add(hotel);
+            user.setHotels(hotels);
+            userRepository.save(user);
+        }
 
         return HotelResponseDTO.builder().build();
     }
@@ -52,6 +65,7 @@ public class HotelService {
                 .departureDate(hotel.getDepartureDate())
                 .returnDate(hotel.getReturnDate())
                 .availableRooms(hotel.getAvailableRooms())
+                .favored(hotel.getFavored())
                 .location(hotel.getLocation())
                 .dailyPrice(hotel.getDailyPrice())
                 .images(getImagesStringToObject(hotel.getImages()))
@@ -72,6 +86,8 @@ public class HotelService {
                 .returnDate(requestDTO.getReturnDate())
                 .availableRooms(requestDTO.getAvailableRooms())
                 .location(requestDTO.getLocation())
+                .idUser(requestDTO.getIdUser())
+                .favored(requestDTO.getFavored())
                 .images(getImages(requestDTO.getImages()))
                 .additional(getAdditionalInfo(requestDTO.getAdditional()))
                 .dailyPrice(requestDTO.getDailyPrice())
@@ -85,6 +101,7 @@ public class HotelService {
                 .availableRooms(requestDTO.getAvailableRooms())
                 .images(requestDTO.getImages())
                 .dailyPrice(requestDTO.getDailyPrice())
+                .favored(requestDTO.getFavored())
                 .additional(getAdditionalInfo(requestDTO.getAdditional()))
                 .rate(requestDTO.getRate())
                 .build();

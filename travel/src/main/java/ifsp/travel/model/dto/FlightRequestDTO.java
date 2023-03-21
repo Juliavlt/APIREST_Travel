@@ -18,9 +18,13 @@ public class FlightRequestDTO implements Serializable {
 
     private Long id;
 
+    private Long idUser;
+
     private String name;
 
     private String departureDate;
+
+    private Boolean favored;
 
     private String returnDate;
 

@@ -18,6 +18,8 @@ public class HotelRequestDTO implements Serializable {
 
     private Long id;
 
+    private Long idUser;
+
     private String name;
 
     private List<String> images;
@@ -25,6 +27,8 @@ public class HotelRequestDTO implements Serializable {
     private String location;
 
     private Double rate;
+
+    private Boolean favored;
 
     private String departureDate;
 
