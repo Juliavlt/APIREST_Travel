@@ -39,9 +39,6 @@ public class Hotel {
     @Column(name = "location")
     private String location;
 
-    @Column(name = "rate")
-    private Double rate;
-
     @Column(name = "favored")
     private Boolean favored;
 
@@ -58,6 +55,15 @@ public class Hotel {
 
     @Column(name = "availableRooms")
     private Integer availableRooms;
+
+    @Column(name = "rate")
+    private Integer rate;
+
+    @Column(name = "qtdAvaliations")
+    private Integer qtdAvaliations;
+
+    @Column(name = "totalAvaliations")
+    private Integer totalAvaliations;
 
     @OneToMany(targetEntity = AdditionalInfo.class, cascade={CascadeType.PERSIST, CascadeType.MERGE,CascadeType.REFRESH}, orphanRemoval=true)
     @JoinColumn(name = "additionalInfo_fk", referencedColumnName = "id")

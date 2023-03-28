@@ -1,9 +1,6 @@
 package ifsp.travel.controller;
-import ifsp.travel.model.dto.SaleRequestDTO;
-import ifsp.travel.model.dto.SaleResponseDTO;
+import ifsp.travel.model.dto.*;
 import ifsp.travel.model.entity.User;
-import ifsp.travel.model.dto.UserRequestDTO;
-import ifsp.travel.model.dto.UserResponseDTO;
 import ifsp.travel.service.SaleService;
 import ifsp.travel.service.UserService;
 import jakarta.transaction.Transactional;
@@ -29,6 +26,20 @@ public class UserController {
             @RequestBody UserRequestDTO userRequestDTO) throws Exception {
 
         UserResponseDTO saveUser = userService.create(userRequestDTO);
+
+        if(saveUser.getError()==null){
+            return ResponseEntity.ok(String.valueOf(saveUser.getId()));
+        }
+        return ResponseEntity.badRequest().body(saveUser.getError());
+    }
+
+    @PutMapping("/user")
+    @Transactional
+    public ResponseEntity<?> updateUser(
+            @RequestBody UserRequestDTO userRequestDTO,
+            @RequestParam(value = "idUser", required = true) Long idUser) throws Exception {
+
+        UserResponseDTO saveUser = userService.update(idUser, userRequestDTO);
 
         if(saveUser.getError()==null){
             return ResponseEntity.ok(String.valueOf(saveUser.getId()));
@@ -78,5 +89,13 @@ public class UserController {
             return ResponseEntity.ok("Venda realizada com sucesso");
         }
         return ResponseEntity.badRequest().body(sale.getError());
+    }
+
+    @PostMapping("/hotel/rate")
+    public ResponseEntity<?> rateHotel(
+            @RequestBody RateRequestDTO request) {
+
+        saleService.rate(request);
+        return ResponseEntity.ok().build();
     }
 }

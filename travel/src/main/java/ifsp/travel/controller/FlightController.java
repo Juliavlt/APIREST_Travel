@@ -30,6 +30,19 @@ public class FlightController {
         return ResponseEntity.badRequest().body(flight.getError());
     }
 
+    @PutMapping("/flight")
+    @Transactional
+    public ResponseEntity<?> updateFlight(
+            @RequestBody FlightRequestDTO flightRequestDTO) {
+
+        FlightResponseDTO flight = flightService.update(flightRequestDTO);
+
+        if(flight.getError()==null){
+            return ResponseEntity.ok().build();
+        }
+        return ResponseEntity.badRequest().body(flight.getError());
+    }
+
     @GetMapping("/flight")
     @Transactional
     public ResponseEntity<?> getFlight(@RequestParam(value = "id", required = true) Long id) {

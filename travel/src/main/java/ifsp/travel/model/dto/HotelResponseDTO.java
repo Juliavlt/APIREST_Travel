@@ -23,7 +23,7 @@ public class HotelResponseDTO implements Serializable {
 
     private String location;
 
-    private Double rate;
+    private Integer rate;
 
     private String departureDate;
 

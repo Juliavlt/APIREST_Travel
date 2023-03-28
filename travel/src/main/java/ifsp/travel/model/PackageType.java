@@ -19,9 +19,9 @@ public class PackageType {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
-    private String type;
+    private String packageType;
 
-    private Double value;
+    private long packageValue;
 }

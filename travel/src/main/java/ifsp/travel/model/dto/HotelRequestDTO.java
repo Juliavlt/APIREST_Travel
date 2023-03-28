@@ -26,7 +26,7 @@ public class HotelRequestDTO implements Serializable {
 
     private String location;
 
-    private Double rate;
+    private Integer rate;
 
     private Boolean favored;
 

@@ -48,15 +48,15 @@ public class User {
     @JoinColumn(name = "messages_fk", referencedColumnName = "id")
     private List<Message> messages;
 
-    @OneToMany(targetEntity = Hotel.class, cascade={CascadeType.PERSIST, CascadeType.MERGE,CascadeType.REFRESH}, orphanRemoval=true)
+    @ManyToMany(targetEntity = Hotel.class, cascade={CascadeType.PERSIST, CascadeType.MERGE,CascadeType.REFRESH})
     @JoinColumn(name = "hotels_fk", referencedColumnName = "id")
     private List<Hotel> hotels;
 
-    @OneToMany(targetEntity = Flight.class, cascade={CascadeType.PERSIST, CascadeType.MERGE,CascadeType.REFRESH}, orphanRemoval=true)
+    @ManyToMany(targetEntity = Flight.class, cascade={CascadeType.PERSIST, CascadeType.MERGE,CascadeType.REFRESH})
     @JoinColumn(name = "flights_fk", referencedColumnName = "id")
     private List<Flight> flights;
 
-    @OneToMany(targetEntity = Package.class, cascade={CascadeType.PERSIST, CascadeType.MERGE,CascadeType.REFRESH}, orphanRemoval=true)
+    @ManyToMany(targetEntity = Package.class, cascade={CascadeType.PERSIST, CascadeType.MERGE,CascadeType.REFRESH})
     @JoinColumn(name = "packages_fk", referencedColumnName = "id")
     private List<Package> packages;
 }

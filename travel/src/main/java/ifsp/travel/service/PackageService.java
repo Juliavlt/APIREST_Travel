@@ -32,7 +32,7 @@ public class PackageService {
         Package pack = Package.builder()
                 .mainImage(requestDTO.getMainImage())
                 .images(getImages(requestDTO.getImages()))
-                .favored(requestDTO.getFavored())
+                .favored(false)
                 .departureDate(requestDTO.getDepartureDate())
                 .returnDate(requestDTO.getReturnDate())
                 .origin(requestDTO.getOrigin())

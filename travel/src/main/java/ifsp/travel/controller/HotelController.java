@@ -31,6 +31,19 @@ public class HotelController {
         return ResponseEntity.badRequest().body(hotel.getError());
     }
 
+    @PutMapping("/hotel")
+    @Transactional
+    public ResponseEntity<?> updateHotel(
+            @RequestBody HotelRequestDTO request) {
+
+        HotelResponseDTO hotel = hotelService.update(request);
+
+        if(hotel.getError()==null){
+            return ResponseEntity.ok().build();
+        }
+        return ResponseEntity.badRequest().body(hotel.getError());
+    }
+
     @GetMapping("/hotel")
     @Transactional
     public ResponseEntity<?> getHotel(@RequestParam(value = "id", required = true) Long id) {
@@ -57,14 +70,5 @@ public class HotelController {
     public ResponseEntity<List<Hotel>> getHotels(){
         List<Hotel> response = hotelService.getAllHotels();
         return ResponseEntity.ok(response);
-    }
-
-    @PostMapping("/hotel/rate")
-    @Transactional
-    public ResponseEntity<?> rateHotel(
-            @RequestBody HotelRequestDTO request) {
-
-        hotelService.rate(request);
-        return ResponseEntity.ok().build();
     }
 }

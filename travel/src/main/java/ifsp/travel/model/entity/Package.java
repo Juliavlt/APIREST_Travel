@@ -3,7 +3,6 @@ package ifsp.travel.model.entity;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import ifsp.travel.model.Image;
-import ifsp.travel.model.PackageType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

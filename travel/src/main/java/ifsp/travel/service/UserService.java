@@ -49,13 +49,16 @@ public class UserService {
 
         repository.save(User.builder()
                 .id(user.getId())
-                .username(requestDTO.getUsername())
-                .name(requestDTO.getUsername())
+                .name(requestDTO.getName())
+                .username(user.getUsername())
                 .email(requestDTO.getEmail())
-                .phone(requestDTO.getPhone())
                 .password(requestDTO.getPassword())
                 .phone(requestDTO.getPhone())
-                .email(requestDTO.getEmail())
+                .profileType(user.getProfileType())
+                .hotels(user.getHotels())
+                .flights(user.getFlights())
+                .packages(user.getPackages())
+                .messages(user.getMessages())
                 .build());
 
         return UserResponseDTO.builder().build();
@@ -74,6 +77,7 @@ public class UserService {
         User user = repository.findByUsername(username);
         if (!ObjectUtils.isEmpty(user) && user.getPassword().equals(password)) {
             return UserResponseDTO.builder()
+                    .id(user.getId())
                     .username(user.getUsername())
                     .name(user.getName())
                     .email(user.getEmail())

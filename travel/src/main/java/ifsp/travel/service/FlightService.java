@@ -34,7 +34,7 @@ public class FlightService {
                 .airline(requestDTO.getAirline())
                 .destiny(requestDTO.getDestiny())
                 .origin(requestDTO.getOrigin())
-                .favored(requestDTO.getFavored())
+                .favored(false)
                 .departureDate(requestDTO.getDepartureDate())
                 .returnDate(requestDTO.getReturnDate())
                 .price(requestDTO.getPrice())
@@ -85,6 +85,7 @@ public class FlightService {
 
         repository.save(Flight.builder()
                 .id(flight.getId())
+                .idUser(flight.getIdUser())
                 .name(requestDTO.getName())
                 .airline(requestDTO.getAirline())
                 .destiny(requestDTO.getDestiny())

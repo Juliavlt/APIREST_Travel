@@ -1,20 +1,12 @@
 package ifsp.travel.service;
 
-import ifsp.travel.model.Image;
-import ifsp.travel.model.dto.PackageRequestDTO;
-import ifsp.travel.model.dto.PackageResponseDTO;
-import ifsp.travel.model.dto.SaleRequestDTO;
-import ifsp.travel.model.dto.SaleResponseDTO;
+import ifsp.travel.model.dto.*;
 import ifsp.travel.model.entity.*;
 import ifsp.travel.model.entity.Package;
 import ifsp.travel.repository.*;
-import org.apache.logging.log4j.message.StringFormattedMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.ObjectUtils;
 
-import java.lang.reflect.Member;
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -40,13 +32,15 @@ public class SaleService {
                 List<Hotel> hotels = user.getHotels();
                 hotels.add(hotel);
                 user.setHotels(hotels);
+                userRepository.save(user);
+
                 User vendedor = userRepository.findById(hotel.getIdUser()).get();
                 List<Message> messages = vendedor.getMessages();
                 Message message = Message.builder().message("Venda do Hotel " + hotel.getName() + " realizada com sucesso!").build();
                 messages.add(message);
                 vendedor.setMessages(messages);
-                userRepository.save(user);
                 userRepository.save(vendedor);
+
             } else {
                 return SaleResponseDTO.builder().error("Vagas indisponíveis").build();
             }
@@ -59,13 +53,13 @@ public class SaleService {
                 List<Flight> flights = user.getFlights();
                 flights.add(flight);
                 user.setFlights(flights);
+                userRepository.save(user);
+
                 User vendedor = userRepository.findById(flight.getIdUser()).get();
                 List<Message> messages = vendedor.getMessages();
                 Message message = Message.builder().message("Venda do Voo " + flight.getName() + " realizada com sucesso!").build();
                 messages.add(message);
                 vendedor.setMessages(messages);
-
-                userRepository.save(user);
                 userRepository.save(vendedor);
 
             } else {
@@ -86,13 +80,24 @@ public class SaleService {
                 List<Package> packages = user.getPackages();
                 packages.add(pack);
                 user.setPackages(packages);
-                User vendedor = userRepository.findById(flight.getIdUser()).get();
-                List<Message> messages = vendedor.getMessages();
-                Message message = Message.builder().message("Venda do Pacote " + pack.getTitle() + " realizada com sucesso!").build();
-                messages.add(message);
-                vendedor.setMessages(messages);
                 userRepository.save(user);
-                userRepository.save(vendedor);
+
+                User vendedorFlight = userRepository.findById(pack.getFlight().getIdUser()).get();
+                User vendedorHotel = userRepository.findById(pack.getHotel().getIdUser()).get();
+
+
+                List<Message> messagesFlight = vendedorFlight.getMessages();
+                Message message1 = Message.builder().message("Venda do Pacote " + pack.getTitle() + ", Voo " + pack.getFlight().getName() +", realizada com sucesso!").build();
+                messagesFlight.add(message1);
+                vendedorFlight.setMessages(messagesFlight);
+                userRepository.save(vendedorFlight);
+
+                List<Message> messagesHotel = vendedorHotel.getMessages();
+                Message message2 = Message.builder().message("Venda do Pacote " + pack.getTitle() + ", Hotel " +  pack.getHotel().getName() + ", realizada com sucesso!").build();
+                messagesHotel.add(message2);
+                vendedorHotel.setMessages(messagesHotel);
+                userRepository.save(vendedorHotel);
+
             } else {
                 pack.setAvailable(0);
                 packageRepository.save(pack);
@@ -102,4 +107,21 @@ public class SaleService {
 
         return SaleResponseDTO.builder().response("Venda realizada com sucesso").build();
     }
+
+    public void rate(RateRequestDTO request) {
+        Hotel hotel = request.getIdHotel() != null ? hotelRepository.findById(request.getIdHotel()).get() : null;
+
+        Integer avaliations = hotel.getQtdAvaliations();
+
+        Integer updatedRate = 0;
+        if (avaliations == 0) updatedRate = request.getRate();
+        else  updatedRate = (hotel.getTotalAvaliations() + request.getRate()) /  (hotel.getQtdAvaliations() + 1);
+
+        hotel.setQtdAvaliations(avaliations+1);
+        hotel.setRate(updatedRate);
+        hotel.setTotalAvaliations(hotel.getTotalAvaliations()+ request.getRate());
+        hotel.setRate(updatedRate);
+        hotelRepository.save(hotel);
+    }
+
 }
