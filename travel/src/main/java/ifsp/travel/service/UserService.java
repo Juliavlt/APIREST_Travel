@@ -79,6 +79,7 @@ public class UserService {
             return UserResponseDTO.builder()
                     .id(user.getId())
                     .username(user.getUsername())
+                    .password(user.getPassword())
                     .name(user.getName())
                     .email(user.getEmail())
                     .phone(user.getPhone())
