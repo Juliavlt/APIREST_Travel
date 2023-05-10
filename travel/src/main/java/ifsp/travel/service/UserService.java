@@ -61,7 +61,20 @@ public class UserService {
                 .messages(user.getMessages())
                 .build());
 
-        return UserResponseDTO.builder().build();
+        user = repository.findById(id).get();
+        return UserResponseDTO.builder()
+                .id(user.getId())
+                .username(user.getUsername())
+                .password(user.getPassword())
+                .name(user.getName())
+                .email(user.getEmail())
+                .phone(user.getPhone())
+                .profileType(user.getProfileType())
+                .hotels(user.getHotels())
+                .flights(user.getFlights())
+                .packages(user.getPackages())
+                .messages(user.getMessages())
+                .build();
     }
 
     public UserResponseDTO delete(Long id) {
